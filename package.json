@@ -4,8 +4,12 @@
   "description": "Jotto",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "npm install && concurrently \"cd server && npm install\" \"cd client && npm install\"",
+    "start": "node scripts/build-client.js && npm run server",
+    "dev": "concurrently \"npm run server:watch\" \"npm run client\"",
+    "server": "NODE_ENV=production node server/index.js",
+    "server:watch": "nodemon server/index.js",
+    "client": "node scripts/start-client.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/sahlamba/jotto/issues"
   },
-  "homepage": "https://github.com/sahlamba/jotto#readme"
+  "homepage": "https://github.com/sahlamba/jotto#readme",
+  "devDependencies": {
+    "concurrently": "^7.2.2",
+    "nodemon": "^2.0.18"
+  }
 }
