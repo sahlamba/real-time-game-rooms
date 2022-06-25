@@ -32,7 +32,8 @@
       "node": true
     },
     "rules": {
-      "semi": "off"
+      "semi": "off",
+      "object-curly-spacing": "off"
     }
   }
 }

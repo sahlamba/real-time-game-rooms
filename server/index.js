@@ -1,6 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import path from 'path'
+import routes from './routes/index.js'
 
 const app = express()
 const port = process.env.PORT || 8080
@@ -17,6 +18,9 @@ if (process.env.NODE_ENV === 'production') {
     )
   })
 }
+
+// Connect all routes
+app.use(routes)
 
 app.listen(port, () => {
   console.log(`Jotto server started at http://localhost:${port}`)
