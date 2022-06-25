@@ -1,12 +1,17 @@
 import express from 'express'
+import http from 'http'
+import cors from 'cors'
 import morgan from 'morgan'
 import path from 'path'
+import ioHandler from './io-handler.js'
 import routes from './routes/index.js'
 
 const app = express()
+const server = http.createServer(app)
 const port = process.env.PORT || 8080
 
 app.use(morgan('tiny'))
+app.use(cors())
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -22,6 +27,8 @@ if (process.env.NODE_ENV === 'production') {
 // Connect all routes
 app.use(routes)
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Jotto server started at http://localhost:${port}`)
 })
+
+ioHandler(server)

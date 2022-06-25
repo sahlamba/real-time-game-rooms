@@ -9,8 +9,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "socket.io": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
@@ -33,7 +35,8 @@
     },
     "rules": {
       "semi": "off",
-      "object-curly-spacing": "off"
+      "object-curly-spacing": "off",
+      "indent": "off"
     }
   }
 }
