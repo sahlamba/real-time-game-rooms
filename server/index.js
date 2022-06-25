@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.get('/', (req, res) => {
     res.send(
-        'Jotto! <br/> React app at: <a href="http://localhost:3000">http://localhost:3000</a>',
+      'Jotto! React app at: <a href="http://localhost:3000">http://localhost:3000</a>',
     )
   })
 }
