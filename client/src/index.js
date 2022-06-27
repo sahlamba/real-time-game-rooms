@@ -1,13 +1,12 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import App from './App'
-import { SocketProvider } from './context/SocketContext'
 
-ReactDOM.render(
+const container = document.getElementById('root')
+const root = createRoot(container)
+
+root.render(
   <React.StrictMode>
-    <SocketProvider>
-      <App />
-    </SocketProvider>
+    <App />
   </React.StrictMode>,
-  document.getElementById('root'),
 )

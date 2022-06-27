@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 import { API_BASE_URL } from '../constants'
 
@@ -8,12 +8,22 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null)
 
   useEffect(() => {
-    setSocket(io(API_BASE_URL))
+    const socketListener = io(API_BASE_URL)
+
+    socketListener.on('connect', () => {
+      setSocket(socketListener)
+    })
+
+    socketListener.on('disconnect', () => {
+      setSocket(null)
+    })
   }, [])
 
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket }}>
+      {children}
+    </SocketContext.Provider>
   )
 }
 
-export default SocketContext
+export const useSocketContext = () => useContext(SocketContext)
