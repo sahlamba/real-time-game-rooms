@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from 'uuid'
 
 export default class Game {
   id // Game session ID: UUID
-  admin // Game admin: User
+  admin // Game admin: Player
   settings // Game settings: GameSettings
 
   constructor(admin, settings) {

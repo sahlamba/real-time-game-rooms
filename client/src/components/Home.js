@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { API_BASE_URL } from '../constants'
-import { useUserContext } from '../context/UserContext'
+import { usePlayerContext } from '../context/PlayerContext'
 import GameSettings from '../models/GameSettings'
 
 const Home = () => {
   const navigate = useNavigate()
 
-  const { user } = useUserContext()
+  const { player } = usePlayerContext()
 
   const createGame = async () => {
     try {
@@ -19,7 +19,7 @@ const Home = () => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user, settings }),
+        body: JSON.stringify({ player, settings }),
       })
       const { ok, game, message } = await res.json()
       if (!ok) {
@@ -34,7 +34,9 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      <h1>Welcome to Jotto, {user ? user.name : 'user not registered'}!</h1>
+      <h1>
+        Welcome to Jotto, {player ? player.name : 'player not registered'}!
+      </h1>
       <button onClick={createGame}>Create game</button>
     </React.Fragment>
   )

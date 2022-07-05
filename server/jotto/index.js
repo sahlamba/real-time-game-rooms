@@ -5,8 +5,8 @@ import Game from './models/Game.js'
 export default class Jotto {
   static db = new JottoDatabase()
 
-  static newGame(user, settings) {
-    const game = new Game(user, settings)
+  static newGame(player, settings) {
+    const game = new Game(player, settings)
     this.db.saveGame(game)
     return game
   }

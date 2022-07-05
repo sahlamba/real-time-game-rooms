@@ -1,5 +1,5 @@
 import Jotto from '../jotto/index.js'
-import { validateUser, validateSettings } from '../utils/validation.js'
+import { validatePlayer, validateSettings } from '../utils/validation.js'
 
 export const getGame = (req, res, next) => {
   try {
@@ -20,11 +20,11 @@ export const getGame = (req, res, next) => {
 
 export const createGame = (req, res, next) => {
   try {
-    const { user, settings } = req.body
-    validateUser(user)
+    const { player, settings } = req.body
+    validatePlayer(player)
     validateSettings(settings)
 
-    const game = Jotto.newGame(user, settings)
+    const game = Jotto.newGame(player, settings)
     res.json({
       ok: true,
       game,
