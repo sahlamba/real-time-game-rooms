@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { API_BASE_URL } from '../constants'
 import { useSocketContext } from '../context/SocketContext'
 import { usePlayerContext } from '../context/PlayerContext'
+import { getGameById, joinGame } from '../utils/apiClient'
 
 const Game = () => {
   const navigate = useNavigate()
@@ -12,28 +12,12 @@ const Game = () => {
   const { player } = usePlayerContext()
   const [game, setGame] = useState(null)
 
-  const getGame = async () => {
+  const getAndSetGame = async () => {
     try {
-      if (!gameId) {
-        return
-      }
-      const res = await fetch(`${API_BASE_URL}/api/game?id=${gameId}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-      const { ok, game, message } = await res.json()
-      setGame(() => {
-        if (!ok) {
-          console.error(message)
-          return null
-        }
-        return game
-      })
+      const game = await getGameById(gameId)
+      setGame(game)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -41,19 +25,17 @@ const Game = () => {
     if (!gameId || gameId === '') {
       navigate('/')
     }
-    getGame()
+    getAndSetGame()
   }, [])
 
-  useEffect(() => {
-    if (socket) {
-      if (gameId) {
-        socket.emit('join_game', { player, gameId })
-      }
-      return () => {
-        socket.emit('leave_game', { player, gameId })
-      }
+  const joinAndSetGame = async () => {
+    try {
+      const game = await joinGame(gameId, player)
+      setGame(game)
+    } catch (error) {
+      console.log(error)
     }
-  }, [socket, player, gameId])
+  }
 
   return (
     <React.Fragment>
@@ -63,6 +45,7 @@ const Game = () => {
       {socket ? <pre>Connected with socket ID: {socket.id}</pre> : null}
       <pre>Game ID: {gameId}</pre>
       <pre>{JSON.stringify(game, null, 2)}</pre>
+      <button onClick={joinAndSetGame}>Join this game</button>
     </React.Fragment>
   )
 }

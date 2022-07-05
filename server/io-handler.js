@@ -17,16 +17,6 @@ const ioHandler = (httpServer) => {
       io.totalConnections -= 1
       console.log(`Socket.io DISCONNECT (${io.totalConnections})`)
     })
-
-    socket.on('join_game', ({ player, gameId }) => {
-      socket.join(gameId)
-      console.log('join_game', { player, gameId })
-    })
-
-    socket.on('leave_game', ({ player, gameId }) => {
-      socket.leave(gameId)
-      console.log('leave_game', { player, gameId })
-    })
   })
 }
 
