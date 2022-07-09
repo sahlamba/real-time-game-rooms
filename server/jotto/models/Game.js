@@ -1,7 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
-import { v4 as uuidV4 } from 'uuid'
+import { customAlphabet } from 'nanoid'
 import PlayerState from './PlayerState.js'
+
+const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 8)
 
 export const GameState = {
   CREATED: 'CREATED',
@@ -11,14 +13,14 @@ export const GameState = {
 }
 
 export default class Game {
-  id // Game session ID: UUID
+  id // Game session ID: nanoid string
   admin // Game admin: Player
   settings // Game settings: GameSettings
   state // Game state: GameState
   players // Players who joined the game: Map<UUID, PlayerState>
 
   constructor(admin, settings) {
-    this.id = uuidV4()
+    this.id = nanoid()
     this.admin = admin
     this.settings = settings
     this.state = GameState.CREATED
