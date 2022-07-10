@@ -42,7 +42,7 @@ const JoinGameInput = ({ onSubmit }) => {
               value={gameCode}
               onChange={updateGameCode}
               isInvalid={!isValidGameCode()}
-              errorBorderColor="teal.300"
+              errorBorderColor="crimson"
             />
             <InputRightElement width="auto">
               <Button
