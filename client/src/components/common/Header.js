@@ -6,22 +6,24 @@ const Header = ({ player, socket }) => {
   return (
     <Flex
       py={8}
-      px={24}
+      px={16}
       direction="column"
       align="center"
       justifyContent="space-between"
-      color="purple.700"
+      color="purple.800"
       boxShadow="lg">
       <Heading>
         <Link to="/">Jotto</Link>
       </Heading>
       <Flex align="center">
-        <Text mr={1}>Player Name:</Text>
+        <Text mr={1} color="teal.500">
+          Player ID:
+        </Text>
         <Tooltip
           isDisabled={!socket}
           label={`Socket ID: ${socket ? socket.id : ''}`}
           hasArrow>
-          <Badge colorScheme="purple" variant="solid">
+          <Badge colorScheme="teal" variant="solid">
             {player ? player.name : 'player not registered'}
           </Badge>
         </Tooltip>
