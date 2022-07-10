@@ -18,6 +18,7 @@ const GameContent = () => {
     readyPlayer,
     readyingPlayer,
     hasPlayerJoinedGame,
+    playerJottoWord,
   } = useGameContext()
 
   if (!loadingGame.status && !game) {
@@ -36,7 +37,7 @@ const GameContent = () => {
 
   return (
     <React.Fragment>
-      <GameDetails game={game} />
+      <GameDetails game={game} playerJottoWord={playerJottoWord} />
       {!hasPlayerJoinedGame() ? (
         <Flex align="center" justifyContent="center">
           <Button
