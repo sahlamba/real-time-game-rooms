@@ -8,7 +8,7 @@ const GameUI = () => {
   const navigate = useNavigate()
   const { gameCode } = useParams()
 
-  const { player } = usePlayerContext()
+  const { player, verifyPlayerOrRedirect } = usePlayerContext()
   const {
     socket,
     game,
@@ -22,6 +22,10 @@ const GameUI = () => {
   } = useGameContext()
 
   const [jottoWord, setJottoWord] = useState('')
+
+  useEffect(() => {
+    verifyPlayerOrRedirect()
+  }, [])
 
   useEffect(() => {
     if (!gameCode || gameCode === '') {

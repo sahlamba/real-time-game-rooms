@@ -22,7 +22,8 @@ const JoinGameInput = ({ onSubmit }) => {
     return gameCode && gameCode.length === 8
   }
 
-  const submit = () => {
+  const submit = (evt) => {
+    evt.preventDefault()
     if (isValidGameCode()) {
       onSubmit({ gameCode })
     }
@@ -30,35 +31,37 @@ const JoinGameInput = ({ onSubmit }) => {
 
   return (
     <Flex maxW="100%" align="center" justifyContent="center">
-      <FormControl>
-        <InputGroup size="lg">
-          <Input
-            w="20rem"
-            maxW="100%"
-            size="lg"
-            placeholder="Game Code"
-            value={gameCode}
-            onChange={updateGameCode}
-            isInvalid={!isValidGameCode()}
-            errorBorderColor="teal.300"
-          />
-          <InputRightElement width="auto">
-            <Button
+      <form onSubmit={submit}>
+        <FormControl>
+          <InputGroup size="lg">
+            <Input
+              w="20rem"
+              maxW="100%"
               size="lg"
-              colorScheme="purple"
-              variant="solid"
-              rightIcon={<ArrowRightIcon />}
-              onClick={submit}>
-              Join
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-        {!isValidGameCode() ? (
-          <FormHelperText textAlign="center">
-            Game codes are 8 characters long.
-          </FormHelperText>
-        ) : null}
-      </FormControl>
+              placeholder="Game Code"
+              value={gameCode}
+              onChange={updateGameCode}
+              isInvalid={!isValidGameCode()}
+              errorBorderColor="teal.300"
+            />
+            <InputRightElement width="auto">
+              <Button
+                type="submit"
+                size="lg"
+                colorScheme="purple"
+                variant="solid"
+                rightIcon={<ArrowRightIcon />}>
+                Join
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          {!isValidGameCode() ? (
+            <FormHelperText textAlign="center">
+              Game codes are 8 characters long.
+            </FormHelperText>
+          ) : null}
+        </FormControl>
+      </form>
     </Flex>
   )
 }

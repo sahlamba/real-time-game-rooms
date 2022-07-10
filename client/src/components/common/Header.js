@@ -15,19 +15,21 @@ const Header = ({ player, socket }) => {
       <Heading>
         <Link to="/">Jotto</Link>
       </Heading>
-      <Flex align="center">
-        <Text mr={1} color="teal.500">
-          Player ID:
-        </Text>
-        <Tooltip
-          isDisabled={!socket}
-          label={`Socket ID: ${socket ? socket.id : ''}`}
-          hasArrow>
-          <Badge colorScheme="teal" variant="solid">
-            {player ? player.name : 'player not registered'}
-          </Badge>
-        </Tooltip>
-      </Flex>
+      {player ? (
+        <Flex align="center">
+          <Text mr={1} color="teal.500">
+            Player ID:
+          </Text>
+          <Tooltip
+            isDisabled={!socket}
+            label={`Socket ID: ${socket ? socket.id : ''}`}
+            hasArrow>
+            <Badge colorScheme="teal" variant="solid">
+              {player.name}
+            </Badge>
+          </Tooltip>
+        </Flex>
+      ) : null}
     </Flex>
   )
 }

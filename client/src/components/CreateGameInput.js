@@ -53,21 +53,26 @@ const CreateGameInput = ({ onSubmit, isCreatingGame }) => {
         onClick={onOpen}>
         Create Game
       </Button>
-      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+      <Modal
+        closeOnOverlayClick={false}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>New Game Settings</ModalHeader>
           <ModalCloseButton />
-          <form onSubmit={submit} disabled={isCreatingGame}>
+          <form onSubmit={submit}>
             <ModalBody>
-              {/* Fixed to 2 for MVP, hence disabled */}
-              <FormControl isDisabled={true}>
+              <FormControl>
                 <FormLabel htmlFor="max-players">Players</FormLabel>
+                {/* Fixed to 2 for MVP, hence disabled */}
                 <NumberInput
                   max={4}
                   min={2}
                   value={maxPlayers}
-                  onChange={updateMaxPlayers}>
+                  onChange={updateMaxPlayers}
+                  disabled={true}>
                   <NumberInputField id="max-players" />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -81,7 +86,8 @@ const CreateGameInput = ({ onSubmit, isCreatingGame }) => {
                   max={5}
                   min={3}
                   value={wordLength}
-                  onChange={updateWordLength}>
+                  onChange={updateWordLength}
+                  disabled={isCreatingGame}>
                   <NumberInputField id="word-length" />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -92,8 +98,14 @@ const CreateGameInput = ({ onSubmit, isCreatingGame }) => {
             </ModalBody>
             <ModalFooter>
               <Stack direction="row" spacing={2}>
-                <Button onClick={onClose}>Close</Button>
-                <Button type="submit" colorScheme="purple" variant="solid">
+                <Button onClick={onClose} disabled={isCreatingGame}>
+                  Close
+                </Button>
+                <Button
+                  type="submit"
+                  colorScheme="purple"
+                  variant="solid"
+                  isLoading={isCreatingGame}>
                   Create
                 </Button>
               </Stack>

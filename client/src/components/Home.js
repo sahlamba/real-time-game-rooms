@@ -12,7 +12,7 @@ import CreateGameInput from './CreateGameInput'
 const Home = () => {
   const navigate = useNavigate()
 
-  const { player } = usePlayerContext()
+  const { player, verifyPlayerOrRedirect } = usePlayerContext()
   const [playerGameCodeMappings, setPlayerGameCodeMappings] = useState([])
   const [isCreatingGame, setIsCreatingGame] = useState(false)
 
@@ -29,6 +29,7 @@ const Home = () => {
   }
 
   useEffect(() => {
+    verifyPlayerOrRedirect()
     getAndSetPlayerGames()
   }, [])
 
