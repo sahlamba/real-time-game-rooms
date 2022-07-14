@@ -1,62 +1,12 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Flex, Spinner, Text } from '@chakra-ui/react'
+
 import { usePlayerContext } from '../../context/PlayerContext'
 import { useGameContext } from '../../context/GameContext'
+
 import Header from '../Header'
-import GameDetails from './GameDetails'
-import JottoWordInput from './JottoWordInput'
-import { Button, Flex, Spinner, Text } from '@chakra-ui/react'
-import { CheckIcon } from '@chakra-ui/icons'
-
-const GameContent = () => {
-  const { player } = usePlayerContext()
-  const {
-    game,
-    loadingGame,
-    joinGame,
-    joiningGame,
-    readyPlayer,
-    readyingPlayer,
-    hasPlayerJoinedGame,
-    playerJottoWord,
-  } = useGameContext()
-
-  if (!loadingGame.status && !game) {
-    return (
-      <Flex my={8} align="center" justifyContent="center">
-        No game found!
-      </Flex>
-    )
-  }
-
-  const joinGameOnCLick = () => joinGame(game.code, player)
-
-  const readyPlayerOnSubmit = ({ jottoWord }) => {
-    readyPlayer(game.code, player, jottoWord)
-  }
-
-  return (
-    <React.Fragment>
-      <GameDetails game={game} playerJottoWord={playerJottoWord} />
-      {!hasPlayerJoinedGame() ? (
-        <Flex align="center" justifyContent="center">
-          <Button
-            colorScheme="purple"
-            variant="solid"
-            rightIcon={<CheckIcon />}
-            onClick={joinGameOnCLick}
-            isLoading={joiningGame}>
-            Join this game
-          </Button>
-        </Flex>
-      ) : null}
-      <JottoWordInput
-        onSubmit={readyPlayerOnSubmit}
-        isLoading={readyingPlayer}
-      />
-    </React.Fragment>
-  )
-}
+import GameContent from './GameContent'
 
 const GameUI = () => {
   const navigate = useNavigate()

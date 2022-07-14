@@ -1,6 +1,8 @@
 import React from 'react'
 import { Badge, Flex, Text } from '@chakra-ui/react'
 
+import { useGameContext } from '../../context/GameContext'
+
 const GameCode = ({ game }) => {
   return (
     <Flex my={1} mx={1} align="center">
@@ -26,7 +28,9 @@ const PlayerJottoWord = ({ playerJottoWord }) => {
   )
 }
 
-const GameDetails = ({ game, playerJottoWord }) => {
+const GameDetails = () => {
+  const { game, playerJottoWord } = useGameContext()
+
   return (
     <Flex my={8} align="center" justifyContent="center">
       <GameCode game={game} />
