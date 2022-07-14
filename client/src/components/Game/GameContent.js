@@ -9,7 +9,7 @@ import GameReadyToStartUI from './GameReadyToStartUI'
 import GamePlayUI from './GamePlayUI'
 
 const GameContent = () => {
-  const { game, loadingGame, playerJottoWord } = useGameContext()
+  const { game, loadingGame } = useGameContext()
 
   if (!loadingGame.status && !game) {
     return (

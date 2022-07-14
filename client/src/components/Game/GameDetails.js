@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Flex, Text } from '@chakra-ui/react'
+import { Avatar, AvatarGroup, Badge, Flex, Text } from '@chakra-ui/react'
 
 import { useGameContext } from '../../context/GameContext'
 
@@ -28,14 +28,44 @@ const PlayerJottoWord = ({ playerJottoWord }) => {
   )
 }
 
+const PlayersInGame = ({ game }) => {
+  const renderPlayerNamesInGame = () =>
+    game ? (
+      <Flex my={1} mx={1} align="center">
+        <Text>Players in Room:</Text>
+        <AvatarGroup size="sm" max={10}>
+          {Object.values(game.players).map((playerState) => (
+            <Avatar
+              key={playerState.player.id}
+              name={playerState.player.name}
+            />
+          ))}
+        </AvatarGroup>
+      </Flex>
+    ) : (
+      []
+    )
+
+  return (
+    <Flex my={1} mx={1} align="center">
+      {renderPlayerNamesInGame()}
+    </Flex>
+  )
+}
+
 const GameDetails = () => {
   const { game, playerJottoWord } = useGameContext()
 
   return (
-    <Flex my={8} align="center" justifyContent="center">
-      <GameCode game={game} />
-      <PlayerJottoWord playerJottoWord={playerJottoWord} />
-    </Flex>
+    <React.Fragment>
+      <Flex my={4} align="center" justifyContent="center">
+        <GameCode game={game} />
+        <PlayerJottoWord playerJottoWord={playerJottoWord} />
+      </Flex>
+      <Flex my={4} align="center" justifyContent="center">
+        <PlayersInGame game={game} />
+      </Flex>
+    </React.Fragment>
   )
 }
 
