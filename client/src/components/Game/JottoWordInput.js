@@ -10,7 +10,7 @@ import {
   InputRightElement,
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
-import { useGameContext } from '../context/GameContext'
+import { useGameContext } from '../../context/GameContext'
 
 const JottoWordInput = ({ onSubmit, isLoading }) => {
   const { game, hasPlayerJoinedGame, isPlayerReady } = useGameContext()

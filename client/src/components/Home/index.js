@@ -3,13 +3,13 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Flex, Heading, List, ListItem, Link, useToast } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
-import GameSettings from '../models/GameSettings'
-import { usePlayerContext } from '../context/PlayerContext'
+import GameSettings from '../../models/GameSettings'
+import { usePlayerContext } from '../../context/PlayerContext'
 
-import { createGame, getPlayerGamesById } from '../utils/apiClient'
-import { notify } from '../utils/ui'
+import { createGame, getPlayerGamesById } from '../../utils/apiClient'
+import { notify } from '../../utils/ui'
 
-import Header from './common/Header'
+import Header from '../Header'
 import JoinGameInput from './JoinGameInput'
 import CreateGameInput from './CreateGameInput'
 
