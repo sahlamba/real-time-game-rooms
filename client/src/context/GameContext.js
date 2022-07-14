@@ -86,16 +86,18 @@ export const GameProvider = ({ children }) => {
     }
   }
 
-  const hasPlayerJoinedGame = () => {
-    return game && game.players && game.players[player.id]
+  const hasPlayerJoinedGame = (player) => {
+    return player && game && game.players && game.players[player.id]
   }
 
-  const isPlayerReady = () => {
-    return hasPlayerJoinedGame() && game.players[player.id].isReady
+  const isPlayerReady = (player) => {
+    return (
+      player && hasPlayerJoinedGame(player) && game.players[player.id].isReady
+    )
   }
 
-  const playerJottoWord = () => {
-    return isPlayerReady() ? game.players[player.id].word : null
+  const playerJottoWord = (player) => {
+    return player && isPlayerReady(player) ? game.players[player.id].word : null
   }
 
   useEffect(() => {

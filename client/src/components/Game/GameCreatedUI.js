@@ -26,7 +26,7 @@ const GameCreatedUI = () => {
 
   return (
     <React.Fragment>
-      {!hasPlayerJoinedGame() ? (
+      {!hasPlayerJoinedGame(player) ? (
         <Flex align="center" justifyContent="center">
           <Button
             colorScheme="purple"

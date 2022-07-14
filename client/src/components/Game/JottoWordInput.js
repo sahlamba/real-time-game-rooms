@@ -11,9 +11,11 @@ import {
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 
+import { usePlayerContext } from '../../context/PlayerContext'
 import { useGameContext } from '../../context/GameContext'
 
 const JottoWordInput = ({ onSubmit, isLoading }) => {
+  const { player } = usePlayerContext()
   const { game, hasPlayerJoinedGame, isPlayerReady } = useGameContext()
 
   const [jottoWord, setJottoWord] = useState('')
@@ -36,7 +38,7 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
 
   return (
     <Flex maxW="100%" mt={8} align="center" justifyContent="center">
-      {hasPlayerJoinedGame() && !isPlayerReady() ? (
+      {hasPlayerJoinedGame(player) && !isPlayerReady(player) ? (
         <form onSubmit={submit}>
           <FormControl>
             <FormLabel htmlFor="jotto-word">Jotto Word</FormLabel>

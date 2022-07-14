@@ -1,5 +1,12 @@
 import React from 'react'
-import { Avatar, AvatarGroup, Badge, Flex, Text } from '@chakra-ui/react'
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarGroup,
+  Badge,
+  Flex,
+  Text,
+} from '@chakra-ui/react'
 
 import { useGameContext } from '../../context/GameContext'
 
@@ -35,10 +42,9 @@ const PlayersInGame = ({ game }) => {
         <Text>Players in Room:</Text>
         <AvatarGroup size="sm" max={10}>
           {Object.values(game.players).map((playerState) => (
-            <Avatar
-              key={playerState.player.id}
-              name={playerState.player.name}
-            />
+            <Avatar key={playerState.player.id} name={playerState.player.name}>
+              <AvatarBadge boxSize="1.25em" bg="green.500" />
+            </Avatar>
           ))}
         </AvatarGroup>
       </Flex>
