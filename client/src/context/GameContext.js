@@ -21,6 +21,7 @@ export const GameProvider = ({ children }) => {
   })
   const [joiningGame, setJoiningGame] = useState(false)
   const [readyingPlayer, setReadyingPlayer] = useState(false)
+  const [startingGame, setStartingGame] = useState(false)
 
   const toast = useToast()
 
@@ -86,6 +87,18 @@ export const GameProvider = ({ children }) => {
     }
   }
 
+  const startGame = (gameCode) => {
+    if (socket && gameCode) {
+      setStartingGame(true)
+      socket.emit('start_game', { gameCode }, (err) => {
+        setStartingGame(false)
+        if (err) {
+          notify(toast, { title: err.message, status: 'error' })
+        }
+      })
+    }
+  }
+
   const hasPlayerJoinedGame = (player) => {
     return player && game && game.players && game.players[player.id]
   }
@@ -98,6 +111,10 @@ export const GameProvider = ({ children }) => {
 
   const playerJottoWord = (player) => {
     return player && isPlayerReady(player) ? game.players[player.id].word : null
+  }
+
+  const isPlayerAdmin = (player) => {
+    return player && game.admin.id === player.id
   }
 
   useEffect(() => {
@@ -119,6 +136,10 @@ export const GameProvider = ({ children }) => {
       setGame(gameState)
     })
 
+    socketListener.on('game_started', ({ gameState }) => {
+      setGame(gameState)
+    })
+
     return () => socketListener.disconnect()
   }, [])
 
@@ -134,9 +155,12 @@ export const GameProvider = ({ children }) => {
         joiningGame,
         readyPlayer,
         readyingPlayer,
+        startGame,
+        startingGame,
         hasPlayerJoinedGame,
         isPlayerReady,
         playerJottoWord,
+        isPlayerAdmin,
         notify,
       }}>
       {children}
