@@ -140,27 +140,34 @@ export const GameProvider = ({ children }) => {
     }
   }
 
-  const hasPlayerJoinedGame = () => {
-    return !!getPlayerState()
-  }
-
-  const isPlayerReady = () => {
-    const playerState = getPlayerState()
-    return !!playerState && playerState.isReady
-  }
-
   const playerJottoWord = () => {
     return isPlayerReady() ? getPlayerState().word : null
-  }
-
-  const isPlayerAdmin = () => {
-    return player && game.admin.id === player.id
   }
 
   const getPlayerGuesses = () => {
     const playerState = getPlayerState()
     return !!playerState ? playerState.guesses : null
   }
+
+  /*
+   * Returns a map of player name (key) and Jotto word (value)
+   * {
+   *   'awesome-dog': 'BARK',
+   *   'amazing-cat: 'MEOW'
+   * }
+   */
+  const getAllJottoWords = () => {
+    return Object.values(game.players).reduce((obj, playerState) => {
+      obj[playerState.player.name] = playerState.word
+      return obj
+    }, {})
+  }
+
+  const hasPlayerJoinedGame = () => !!getPlayerState()
+  const isPlayerReady = () => !!getPlayerState() && getPlayerState().isReady
+  const isPlayerAdmin = () => player && game.admin.id === player.id
+  const isGameOver = () => game && game.state === 'OVER'
+  const didPlayerWin = () => isGameOver() && game.winnerId === player.id
 
   useEffect(() => {
     const socketListener = io(API_BASE_URL)
@@ -198,21 +205,24 @@ export const GameProvider = ({ children }) => {
         socket,
         game,
         loadingGame,
+        joiningGame,
+        readyingPlayer,
+        guessingWord,
+        startingGame,
         connectPlayer,
         disconnectPlayer,
         joinGame,
-        joiningGame,
         readyPlayer,
-        readyingPlayer,
         startGame,
-        startingGame,
         guessPlayerWord,
-        guessingWord,
         hasPlayerJoinedGame,
         isPlayerReady,
-        playerJottoWord,
+        isGameOver,
+        didPlayerWin,
         isPlayerAdmin,
+        playerJottoWord,
         getPlayerGuesses,
+        getAllJottoWords,
         notify,
       }}>
       {children}

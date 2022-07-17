@@ -16,7 +16,7 @@ import { useGameContext } from '../../../context/GameContext'
 import { notify } from '../../../utils/ui'
 
 const GuessWordInput = ({ onSubmit, isLoading }) => {
-  const { game } = useGameContext()
+  const { game, isGameOver } = useGameContext()
 
   const validGuessWordDescription = `Word should have ${game.settings.wordLength} letters.`
 
@@ -54,6 +54,7 @@ const GuessWordInput = ({ onSubmit, isLoading }) => {
           <FormLabel htmlFor="jotto-word">Guess opponent's word</FormLabel>
           <InputGroup size="lg">
             <Input
+              disabled={isGameOver()}
               id="jotto-word"
               w="20rem"
               maxW="100%"

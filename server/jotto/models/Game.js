@@ -19,6 +19,7 @@ export default class Game {
   settings // Game settings: GameSettings
   state // Game state: GameState
   players // Players who joined the game: Map<UUID, PlayerState>
+  winnerId // Winner of the game: Player UUID string
 
   constructor(admin, settings) {
     this.code = nanoid()
@@ -26,6 +27,7 @@ export default class Game {
     this.settings = settings
     this.state = GameState.CREATED
     this.players = {}
+    this.winnerId = null
   }
 
   static from(json) {
@@ -80,6 +82,7 @@ export default class Game {
 
     if (result.isCompleteMatch) {
       this.state = GameState.OVER
+      this.winnerId = guesser.id
     }
     return result
   }

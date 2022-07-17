@@ -5,9 +5,11 @@ import { CheckCircleIcon } from '@chakra-ui/icons'
 import { useGameContext } from '../../../context/GameContext'
 
 import GuessWordInput from './GuessWordInput'
+import GameOverDetails from './GameOverDetails'
 
 const GamePlayUI = () => {
-  const { guessPlayerWord, guessingWord, getPlayerGuesses } = useGameContext()
+  const { guessPlayerWord, guessingWord, getPlayerGuesses, isGameOver } =
+    useGameContext()
 
   const guessWordOnClick = ({ guessWord }) => {
     guessPlayerWord(guessWord)
@@ -20,7 +22,11 @@ const GamePlayUI = () => {
 
   return (
     <Flex direction="column" alignItems="center" justifyContent="center">
-      <GuessWordInput onSubmit={guessWordOnClick} isLoading={guessingWord} />
+      {isGameOver() ? (
+        <GameOverDetails />
+      ) : (
+        <GuessWordInput onSubmit={guessWordOnClick} isLoading={guessingWord} />
+      )}
       <Flex direction="column" alignItems="center">
         <Heading as="u" mt={8} mb={3} size="sm" color="gray.800">
           Your guesses
