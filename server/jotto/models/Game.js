@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import { customAlphabet } from 'nanoid'
+import GuessResult from './GuessResult.js'
 import PlayerState from './PlayerState.js'
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 8)
@@ -59,6 +60,30 @@ export default class Game {
     this.state = GameState.PLAYING
   }
 
+  guessPlayerWord(guesser, opponent, word) {
+    if (this.state !== GameState.PLAYING) {
+      throw new Error(
+        `guessPlayerWord can only be called when game has started, current state: ${this.state}`,
+      )
+    }
+
+    this.validatePlayerExists(guesser)
+    this.validatePlayerExists(opponent)
+
+    // Compute GuessResult by comparing guess word and opponent word
+    const result = GuessResult.compute(word, this.players[opponent.id].word)
+
+    // Add current guess with results to guess word history
+    const playerState = PlayerState.from(this.players[guesser.id])
+    playerState.addGuess(result)
+    this.players[guesser.id] = playerState
+
+    if (result.isCompleteMatch) {
+      this.state = GameState.OVER
+    }
+    return result
+  }
+
   readyToStartGame() {
     return (
       this.state === GameState.CREATED &&
@@ -98,11 +123,7 @@ export default class Game {
         `Cannot ready player, expected game state: ${GameState.CREATED}, actual: ${this.state}`,
       )
     }
-    if (!this.players[player.id]) {
-      throw new Error(
-        `Player ID ${player.id} (${player.name}) does not exist in current game!`,
-      )
-    }
+    this.validatePlayerExists(player)
   }
 
   validateJottoWord(word) {
@@ -111,6 +132,14 @@ export default class Game {
     if (actualWordLength !== expectedWordLength) {
       throw new Error(
         `${word} is not a valid word due to length mismatch, expected:${expectedWordLength}, actual:${actualWordLength}`,
+      )
+    }
+  }
+
+  validatePlayerExists(player) {
+    if (!this.players[player.id]) {
+      throw new Error(
+        `Player ID ${player.id} (${player.name}) does not exist in current game!`,
       )
     }
   }
