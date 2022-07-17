@@ -8,17 +8,24 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useToast,
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 
-import { usePlayerContext } from '../../context/PlayerContext'
-import { useGameContext } from '../../context/GameContext'
+import { usePlayerContext } from '../../../context/PlayerContext'
+import { useGameContext } from '../../../context/GameContext'
+
+import { notify } from '../../../utils/ui'
 
 const JottoWordInput = ({ onSubmit, isLoading }) => {
   const { player } = usePlayerContext()
   const { game, hasPlayerJoinedGame, isPlayerReady } = useGameContext()
 
+  const validJottoWordDescription = `Word should have ${game.settings.wordLength} letters.`
+
   const [jottoWord, setJottoWord] = useState('')
+
+  const toast = useToast()
 
   const updateJottoWord = (evt) => {
     evt.preventDefault()
@@ -33,11 +40,17 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
     evt.preventDefault()
     if (isValidJottoWord()) {
       onSubmit({ jottoWord })
+    } else {
+      notify(toast, {
+        title: 'Invalid word!',
+        description: validJottoWordDescription,
+        status: 'error',
+      })
     }
   }
 
   return (
-    <Flex maxW="100%" mt={8} align="center" justifyContent="center">
+    <Flex maxW="100%" mt={8} alignItems="center" justifyContent="center">
       {hasPlayerJoinedGame(player) && !isPlayerReady(player) ? (
         <form onSubmit={submit}>
           <FormControl>
@@ -51,14 +64,14 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
                 placeholder={`Enter ${game.settings.wordLength} letter word`}
                 value={jottoWord ? jottoWord : ''}
                 onChange={updateJottoWord}
-                isInvalid={!isValidJottoWord()}
+                isInvalid={jottoWord && !isValidJottoWord()}
                 errorBorderColor="crimson"
               />
               <InputRightElement width="auto">
                 <Button
                   type="submit"
                   size="lg"
-                  colorScheme="teal"
+                  colorScheme="green"
                   variant="solid"
                   rightIcon={<CheckIcon />}
                   isLoading={isLoading}>
@@ -66,9 +79,9 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
                 </Button>
               </InputRightElement>
             </InputGroup>
-            {!isValidJottoWord() ? (
+            {jottoWord && !isValidJottoWord() ? (
               <FormHelperText textAlign="center">
-                {`Maximum allowed word length is ${game.settings.wordLength}.`}
+                {validJottoWordDescription}
               </FormHelperText>
             ) : null}
           </FormControl>
