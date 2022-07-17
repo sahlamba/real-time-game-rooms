@@ -4,7 +4,11 @@ import { customAlphabet } from 'nanoid'
 import GuessResult from './GuessResult.js'
 import PlayerState from './PlayerState.js'
 
-const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 8)
+const GAME_CODE_LENGTH = 6
+const nanoid = customAlphabet(
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  GAME_CODE_LENGTH,
+)
 
 export const GameState = {
   CREATED: 'CREATED',
