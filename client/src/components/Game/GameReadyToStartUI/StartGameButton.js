@@ -5,9 +5,9 @@ import { CheckIcon } from '@chakra-ui/icons'
 import { useGameContext } from '../../../context/GameContext'
 
 const StartGameButton = () => {
-  const { game, startGame, startingGame } = useGameContext()
+  const { startGame, startingGame } = useGameContext()
 
-  const startGameOnClick = () => startGame(game.code)
+  const startGameOnClick = () => startGame()
   return (
     <Button
       colorScheme="green"

@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react'
 
 import { useGameContext } from '../../context/GameContext'
-import { usePlayerContext } from '../../context/PlayerContext'
 
 const GameCode = () => {
   const { game } = useGameContext()
@@ -27,10 +26,9 @@ const GameCode = () => {
 }
 
 const PlayerJottoWord = () => {
-  const { player } = usePlayerContext()
   const { playerJottoWord } = useGameContext()
 
-  const word = playerJottoWord(player)
+  const word = playerJottoWord()
   if (!word) return null
 
   return (

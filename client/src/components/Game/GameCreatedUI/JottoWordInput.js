@@ -12,14 +12,12 @@ import {
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 
-import { usePlayerContext } from '../../../context/PlayerContext'
 import { useGameContext } from '../../../context/GameContext'
 
 import { notify } from '../../../utils/ui'
 
 const JottoWordInput = ({ onSubmit, isLoading }) => {
-  const { player } = usePlayerContext()
-  const { game, hasPlayerJoinedGame, isPlayerReady } = useGameContext()
+  const { game } = useGameContext()
 
   const validJottoWordDescription = `Word should have ${game.settings.wordLength} letters.`
 
@@ -51,42 +49,40 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
 
   return (
     <Flex maxW="100%" mt={8} alignItems="center" justifyContent="center">
-      {hasPlayerJoinedGame(player) && !isPlayerReady(player) ? (
-        <form onSubmit={submit}>
-          <FormControl>
-            <FormLabel htmlFor="jotto-word">Jotto Word</FormLabel>
-            <InputGroup size="lg">
-              <Input
-                id="jotto-word"
-                w="20rem"
-                maxW="100%"
+      <form onSubmit={submit}>
+        <FormControl>
+          <FormLabel htmlFor="jotto-word">Jotto Word</FormLabel>
+          <InputGroup size="lg">
+            <Input
+              id="jotto-word"
+              w="20rem"
+              maxW="100%"
+              size="lg"
+              placeholder={`Enter ${game.settings.wordLength} letter word`}
+              value={jottoWord ? jottoWord : ''}
+              onChange={updateJottoWord}
+              isInvalid={jottoWord && !isValidJottoWord()}
+              errorBorderColor="crimson"
+            />
+            <InputRightElement width="auto">
+              <Button
+                type="submit"
                 size="lg"
-                placeholder={`Enter ${game.settings.wordLength} letter word`}
-                value={jottoWord ? jottoWord : ''}
-                onChange={updateJottoWord}
-                isInvalid={jottoWord && !isValidJottoWord()}
-                errorBorderColor="crimson"
-              />
-              <InputRightElement width="auto">
-                <Button
-                  type="submit"
-                  size="lg"
-                  colorScheme="green"
-                  variant="solid"
-                  rightIcon={<CheckIcon />}
-                  isLoading={isLoading}>
-                  Ready
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            {jottoWord && !isValidJottoWord() ? (
-              <FormHelperText textAlign="center">
-                {validJottoWordDescription}
-              </FormHelperText>
-            ) : null}
-          </FormControl>
-        </form>
-      ) : null}
+                colorScheme="green"
+                variant="solid"
+                rightIcon={<CheckIcon />}
+                isLoading={isLoading}>
+                Ready
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          {jottoWord && !isValidJottoWord() ? (
+            <FormHelperText textAlign="center">
+              {validJottoWordDescription}
+            </FormHelperText>
+          ) : null}
+        </FormControl>
+      </form>
     </Flex>
   )
 }
