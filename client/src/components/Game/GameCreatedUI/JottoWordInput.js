@@ -48,7 +48,7 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
   }
 
   return (
-    <Flex maxW="100%" mt={8} alignItems="center" justifyContent="center">
+    <Flex maxW="100%" alignItems="center" justifyContent="center">
       <form onSubmit={submit}>
         <FormControl>
           <FormLabel htmlFor="jotto-word">Jotto Word</FormLabel>
@@ -63,6 +63,7 @@ const JottoWordInput = ({ onSubmit, isLoading }) => {
               onChange={updateJottoWord}
               isInvalid={jottoWord && !isValidJottoWord()}
               errorBorderColor="crimson"
+              autoComplete="off"
             />
             <InputRightElement width="auto">
               <Button
