@@ -36,6 +36,10 @@ const PlayerJottoWord = ({ playerJottoWord }) => {
 }
 
 const PlayersInGame = ({ game }) => {
+  if (!game || !game.players || !Object.values(game.players).length) {
+    return null
+  }
+
   const renderPlayerNamesInGame = () =>
     game ? (
       <Flex my={1} mx={1} align="center">
