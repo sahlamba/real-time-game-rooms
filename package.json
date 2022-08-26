@@ -1,7 +1,7 @@
 {
-  "name": "jotto",
+  "name": "real-time-game-rooms",
   "version": "0.1.0",
-  "description": "Jotto",
+  "description": "NodeJs + Socket.io based muliplayer real-time game rooms with a ReactJs frontend.",
   "main": "server/index.js",
   "scripts": {
     "setup": "npm install && concurrently \"cd server && npm install\" \"cd client && npm install\"",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sahlamba/jotto.git"
+    "url": "git+https://github.com/sahlamba/real-time-game-rooms.git"
   },
   "author": "Sahil Lamba <sahil.lamba95@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sahlamba/jotto/issues"
+    "url": "https://github.com/sahlamba/real-time-game-rooms/issues"
   },
-  "homepage": "https://github.com/sahlamba/jotto#readme",
+  "homepage": "https://github.com/sahlamba/real-time-game-rooms#readme",
   "devDependencies": {
     "concurrently": "^7.2.2",
     "nodemon": "^2.0.18"
