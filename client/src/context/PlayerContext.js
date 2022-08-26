@@ -15,7 +15,7 @@ export const PlayerProvider = ({ children }) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [player, setPlayer] = useLocalStorageState('JottoPlayer', null)
+  const [player, setPlayer] = useLocalStorageState('GamePlayer', null)
   const [randomName] = useState(
     uniqueNamesGenerator({
       dictionaries: [adjectives, animals],

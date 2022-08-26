@@ -1,9 +1,9 @@
-import JottoDatabase from './db.js'
+import GameDatabase from './db.js'
 import Game from './models/Game.js'
 
 /* eslint-disable require-jsdoc */
-export default class Jotto {
-  static db = new JottoDatabase()
+export default class GameEngine {
+  static db = new GameDatabase()
 
   static newGame(player, settings) {
     const game = new Game(player, settings)
@@ -42,9 +42,9 @@ export default class Jotto {
     return this.db.getPlayerGamesByPlayerId(playerId)
   }
 
-  static readyPlayer(gameCode, player, jottoWord) {
+  static readyPlayer(gameCode, player) {
     const game = this.getGameOrThrow(gameCode)
-    game.readyPlayer(player, jottoWord)
+    game.readyPlayer(player)
     this.db.updateGame(game)
   }
 
@@ -54,10 +54,10 @@ export default class Jotto {
     this.db.updateGame(game)
   }
 
-  static guessPlayerWord(gameCode, guesser, opponent, word) {
+  static acceptGameplayInput(gameCode, player, data) {
     const game = this.getGameOrThrow(gameCode)
-    const guessResult = game.guessPlayerWord(guesser, opponent, word)
+    const result = game.acceptGameplayInput(player, data)
     this.db.updateGame(game)
-    return guessResult
+    return result
   }
 }

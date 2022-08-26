@@ -25,24 +25,6 @@ const GameCode = () => {
   )
 }
 
-const PlayerJottoWord = () => {
-  const { playerJottoWord } = useGameContext()
-
-  const word = playerJottoWord()
-  if (!word) return null
-
-  return (
-    <Flex my={1} mx={1} direction="column" alignItems="center">
-      <Text mb={1} fontSize="0.8rem" color="gray.500">
-        Your word
-      </Text>
-      <Badge ml={1} variant="solid" fontSize="1.2rem" colorScheme="purple">
-        {word}
-      </Badge>
-    </Flex>
-  )
-}
-
 const PlayersInGame = () => {
   const { game } = useGameContext()
 
@@ -85,7 +67,6 @@ const GameDetails = () => {
   return (
     <Flex mt={4} mb={8} alignItems="baseline" justifyContent="center">
       <GameCode />
-      <PlayerJottoWord />
       <PlayersInGame />
     </Flex>
   )

@@ -23,12 +23,7 @@ import { AddIcon } from '@chakra-ui/icons'
 const CreateGameInput = ({ onSubmit, isCreatingGame }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [wordLength, setWordLength] = useState(4)
   const [maxPlayers, setMaxPlayers] = useState(2) // Fixed to 2 for MVP
-
-  const updateWordLength = (valueAsString, valueAsNumber) => {
-    setWordLength(valueAsNumber)
-  }
 
   const updateMaxPlayers = (valueAsString, valueAsNumber) => {
     setMaxPlayers(valueAsNumber)
@@ -39,7 +34,6 @@ const CreateGameInput = ({ onSubmit, isCreatingGame }) => {
     onSubmit({
       gameSettings: {
         maxPlayers,
-        wordLength,
       },
     })
   }
@@ -74,21 +68,6 @@ const CreateGameInput = ({ onSubmit, isCreatingGame }) => {
                   onChange={updateMaxPlayers}
                   disabled={true}>
                   <NumberInputField id="max-players" />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="word-length">Word Length</FormLabel>
-                <NumberInput
-                  max={5}
-                  min={3}
-                  value={wordLength}
-                  onChange={updateWordLength}
-                  disabled={isCreatingGame}>
-                  <NumberInputField id="word-length" />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />

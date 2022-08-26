@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import loki from 'lokijs'
 
-export default class JottoDatabase {
+export default class GameDatabase {
   db
   games // Collection to store currently live games
   playerGames // Collection to store a player's currently joined games
@@ -10,7 +10,7 @@ export default class JottoDatabase {
 
   constructor() {
     // eslint-disable-next-line new-cap
-    this.db = new loki('jotto.db', { adapter: new loki.LokiMemoryAdapter() })
+    this.db = new loki('game.db', { adapter: new loki.LokiMemoryAdapter() })
     this.games = this.db.addCollection('games', {
       unique: 'code',
       autoupdate: true,

@@ -1,21 +1,14 @@
 import React from 'react'
-import { Flex, Heading, Text } from '@chakra-ui/react'
+import { Flex, Heading } from '@chakra-ui/react'
 
 import { useGameContext } from '../../../context/GameContext'
 
 const GameOverDetails = () => {
-  const { isGameOver, didPlayerWin, getAllJottoWords } = useGameContext()
+  const { isGameOver, didPlayerWin } = useGameContext()
 
   if (!isGameOver()) {
     return null
   }
-
-  const renderAllJottoWords = () =>
-    Object.entries(getAllJottoWords()).map(([playerName, word]) => (
-      <Text key={playerName} color="white">
-        <Text as="strong">{playerName}</Text>'s word: {word}
-      </Text>
-    ))
 
   return (
     <Flex
@@ -28,7 +21,6 @@ const GameOverDetails = () => {
       <Heading mb={4} color="white">
         You {didPlayerWin() ? 'win' : 'lose'}!
       </Heading>
-      {renderAllJottoWords()}
     </Flex>
   )
 }

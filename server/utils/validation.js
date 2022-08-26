@@ -11,13 +11,7 @@ export const validatePlayer = (player) => {
 }
 
 export const validateSettings = (settings) => {
-  if (!settings || !settings.maxPlayers || !settings.wordLength) {
+  if (!settings || !settings.maxPlayers) {
     throw new Error(`Invalid settings: ${JSON.stringify(settings)}`)
-  }
-}
-
-export const validateJottoWord = (jottoWord) => {
-  if (!jottoWord || jottoWord.length === 0) {
-    throw new Error(`Missing Jotto word`)
   }
 }
