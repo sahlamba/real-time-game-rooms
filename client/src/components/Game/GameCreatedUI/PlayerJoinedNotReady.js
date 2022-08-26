@@ -2,17 +2,17 @@ import React from 'react'
 
 import { useGameContext } from '../../../context/GameContext'
 
-import JottoWordInput from './JottoWordInput'
+import ReadyInput from './ReadyInput'
 
 const PlayerJoinedNotReady = () => {
   const { readyPlayer, readyingPlayer } = useGameContext()
 
-  const readyPlayerOnSubmit = ({ jottoWord }) => {
-    readyPlayer(jottoWord)
+  const readyPlayerOnSubmit = () => {
+    readyPlayer()
   }
 
   return (
-    <JottoWordInput onSubmit={readyPlayerOnSubmit} isLoading={readyingPlayer} />
+    <ReadyInput onSubmit={readyPlayerOnSubmit} isLoading={readyingPlayer} />
   )
 }
 

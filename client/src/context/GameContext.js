@@ -22,7 +22,7 @@ export const GameProvider = ({ children }) => {
   const [joiningGame, setJoiningGame] = useState(false)
   const [readyingPlayer, setReadyingPlayer] = useState(false)
   const [startingGame, setStartingGame] = useState(false)
-  const [guessingWord, setGuessingWord] = useState(false)
+  const [gameplayInputInProgress, setGameplayInputInProgress] = useState(false)
 
   const toast = useToast()
 
@@ -69,26 +69,15 @@ export const GameProvider = ({ children }) => {
     }
   }
 
-  const readyPlayer = (jottoWord) => {
-    if (jottoWord.length > game.settings.maxWordLength) {
-      notify(toast, {
-        title: `Maximum word length is ${game.settings.maxWordLength}`,
-        status: 'error',
-      })
-      return
-    }
+  const readyPlayer = () => {
     if (socket && game) {
       setReadyingPlayer(true)
-      socket.emit(
-        'ready_player',
-        { gameCode: game.code, player, jottoWord },
-        (err) => {
-          setReadyingPlayer(false)
-          if (err) {
-            notify(toast, { title: err.message, status: 'error' })
-          }
-        },
-      )
+      socket.emit('ready_player', { gameCode: game.code, player }, (err) => {
+        setReadyingPlayer(false)
+        if (err) {
+          notify(toast, { title: err.message, status: 'error' })
+        }
+      })
     }
   }
 
@@ -104,28 +93,14 @@ export const GameProvider = ({ children }) => {
     }
   }
 
-  const getOpponent = () => {
-    if (player && game && game.players && game.players[player.id]) {
-      return Object.values(game.players)
-        .map((playerState) => playerState.player)
-        .filter((p) => p.id !== player.id)[0]
-    }
-    throw new Error('Could not get opponent')
-  }
-
-  const guessPlayerWord = (word) => {
+  const acceptGameplayInput = (data) => {
     if (socket && game) {
-      setGuessingWord(true)
+      setGameplayInputInProgress(true)
       socket.emit(
-        'guess_word',
-        {
-          gameCode: game.code,
-          guesser: player,
-          opponent: getOpponent(),
-          word,
-        },
+        'gameplay_input',
+        { gameCode: game.code, player, data },
         (err) => {
-          setGuessingWord(false)
+          setGameplayInputInProgress(false)
           if (err) {
             notify(toast, { title: err.message, status: 'error' })
           }
@@ -138,29 +113,6 @@ export const GameProvider = ({ children }) => {
     if (player && game && game.players && game.players[player.id]) {
       return game.players[player.id]
     }
-  }
-
-  const playerJottoWord = () => {
-    return isPlayerReady() ? getPlayerState().word : null
-  }
-
-  const getPlayerGuesses = () => {
-    const playerState = getPlayerState()
-    return !!playerState ? playerState.guesses : null
-  }
-
-  /*
-   * Returns a map of player name (key) and Jotto word (value)
-   * {
-   *   'awesome-dog': 'BARK',
-   *   'amazing-cat: 'MEOW'
-   * }
-   */
-  const getAllJottoWords = () => {
-    return Object.values(game.players).reduce((obj, playerState) => {
-      obj[playerState.player.name] = playerState.word
-      return obj
-    }, {})
   }
 
   const hasPlayerJoinedGame = () => !!getPlayerState()
@@ -192,7 +144,7 @@ export const GameProvider = ({ children }) => {
       setGame(gameState)
     })
 
-    socketListener.on('player_guessed_word', ({ gameState }) => {
+    socketListener.on('player_submitted_gameplay_input', ({ gameState }) => {
       setGame(gameState)
     })
 
@@ -207,22 +159,19 @@ export const GameProvider = ({ children }) => {
         loadingGame,
         joiningGame,
         readyingPlayer,
-        guessingWord,
         startingGame,
+        gameplayInputInProgress,
         connectPlayer,
         disconnectPlayer,
         joinGame,
         readyPlayer,
         startGame,
-        guessPlayerWord,
+        acceptGameplayInput,
         hasPlayerJoinedGame,
         isPlayerReady,
         isGameOver,
         didPlayerWin,
         isPlayerAdmin,
-        playerJottoWord,
-        getPlayerGuesses,
-        getAllJottoWords,
         notify,
       }}>
       {children}

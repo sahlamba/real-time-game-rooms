@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import { customAlphabet } from 'nanoid'
-import GuessResult from './GuessResult.js'
 import PlayerState from './PlayerState.js'
 
 const GAME_CODE_LENGTH = 6
@@ -43,13 +42,11 @@ export default class Game {
     this.players[player.id] = new PlayerState(player)
   }
 
-  readyPlayer(player, jottoWord) {
+  readyPlayer(player) {
     this.verifyCanReadyPlayer(player)
-    this.validateJottoWord(jottoWord)
 
     const playerState = PlayerState.from(this.players[player.id])
     playerState.setIsReady()
-    playerState.setWord(jottoWord)
     this.players[player.id] = playerState
 
     if (this.readyToStartGame()) {
@@ -66,27 +63,30 @@ export default class Game {
     this.state = GameState.PLAYING
   }
 
-  guessPlayerWord(guesser, opponent, word) {
+  acceptGameplayInput(player, data) {
     if (this.state !== GameState.PLAYING) {
       throw new Error(
-        `guessPlayerWord can only be called when game has started, current state: ${this.state}`,
+        `acceptGameplayInput can only be called when game has started, current state: ${this.state}`,
       )
     }
 
-    this.validatePlayerExists(guesser)
-    this.validatePlayerExists(opponent)
+    this.validatePlayerExists(player)
+    // validateData(data)
 
-    // Compute GuessResult by comparing guess word and opponent word
-    const result = GuessResult.compute(word, this.players[opponent.id].word)
+    // Compute current turn result here
+    const result = {
+      dataString: JSON.stringify(data),
+      isWinning: Math.random() < 0.5, // Randomly generate true or false for boilerplate
+    }
 
-    // Add current guess with results to guess word history
-    const playerState = PlayerState.from(this.players[guesser.id])
-    playerState.addGuess(result)
-    this.players[guesser.id] = playerState
+    // Add current turn's results to player's turn history
+    const playerState = PlayerState.from(this.players[player.id])
+    playerState.addTurnResult(result)
+    this.players[player.id] = playerState
 
-    if (result.isCompleteMatch) {
+    if (result.isWinning) {
       this.state = GameState.OVER
-      this.winnerId = guesser.id
+      this.winnerId = player.id
     }
     return result
   }
@@ -131,16 +131,6 @@ export default class Game {
       )
     }
     this.validatePlayerExists(player)
-  }
-
-  validateJottoWord(word) {
-    const expectedWordLength = this.settings.wordLength
-    const actualWordLength = word.length
-    if (actualWordLength !== expectedWordLength) {
-      throw new Error(
-        `${word} is not a valid word due to length mismatch, expected:${expectedWordLength}, actual:${actualWordLength}`,
-      )
-    }
   }
 
   validatePlayerExists(player) {

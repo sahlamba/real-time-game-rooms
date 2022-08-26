@@ -1,4 +1,4 @@
-import Jotto from '../jotto/index.js'
+import GameEngine from '../game-engine/index.js'
 import {
   validateGameCode,
   validatePlayer,
@@ -10,7 +10,7 @@ export const getGame = (req, res, next) => {
     const { code } = req.query
     validateGameCode(code)
 
-    const game = Jotto.getGame(code)
+    const game = GameEngine.getGame(code)
     res.json({
       ok: true,
       game,
@@ -27,7 +27,7 @@ export const createGame = (req, res, next) => {
     validatePlayer(player)
     validateSettings(settings)
 
-    const game = Jotto.newGame(player, settings)
+    const game = GameEngine.newGame(player, settings)
     res.json({
       ok: true,
       game,

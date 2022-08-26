@@ -1,30 +1,24 @@
 /* eslint-disable require-jsdoc */
 export default class PlayerState {
   player // Game player: Player
-  word // Player's word: string
   isReady // Is player ready?: boolean
-  guesses // Player's guessed words with results: GuessResult[]
+  results // Player's turn results: [] of objects
 
   constructor(player) {
     this.player = player
-    this.word = ''
     this.isReady = false
-    this.guesses = []
+    this.results = []
   }
 
   static from(json) {
     return Object.assign(new PlayerState(), json)
   }
 
-  setWord(word) {
-    this.word = word
-  }
-
   setIsReady() {
     this.isReady = true
   }
 
-  addGuess(guessResult) {
-    this.guesses.push(guessResult)
+  addTurnResult(result) {
+    this.results.push(result)
   }
 }

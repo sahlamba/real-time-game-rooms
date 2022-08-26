@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.get('/', (req, res) => {
     res.send(
-      'Jotto! React app at: <a href="http://localhost:3000">http://localhost:3000</a>',
+      'React app at: <a href="http://localhost:3000">http://localhost:3000</a>',
     )
   })
 
@@ -55,7 +55,7 @@ app.use((err, req, res, next) => {
 })
 
 server.listen(port, () => {
-  console.log(`Jotto server started at http://localhost:${port}`)
+  console.log(`Game server started at http://localhost:${port}`)
 })
 
 socketIoHandler(server)

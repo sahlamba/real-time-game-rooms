@@ -1,9 +1,5 @@
-import Jotto from '../jotto/index.js'
-import {
-  validateGameCode,
-  validateJottoWord,
-  validatePlayer,
-} from '../utils/validation.js'
+import GameEngine from '../game-engine/index.js'
+import { validateGameCode, validatePlayer } from '../utils/validation.js'
 
 const errorInstanceToJson = (error) => {
   return {
@@ -41,33 +37,27 @@ const onPlayerJoinsGame = (_io, _socket, { gameCode, player }, callback) => {
     validateGameCode(gameCode)
     validatePlayer(player)
 
-    Jotto.joinGame(gameCode, player)
+    GameEngine.joinGame(gameCode, player)
 
     _socket.join(gameCode)
     _io
       .to(gameCode)
-      .emit('player_joined_game', { gameState: Jotto.getGame(gameCode) })
+      .emit('player_joined_game', { gameState: GameEngine.getGame(gameCode) })
     callback()
   } catch (error) {
     callback(errorInstanceToJson(error))
   }
 }
 
-const onPlayerReady = (
-  _io,
-  _socket,
-  { gameCode, player, jottoWord },
-  callback,
-) => {
+const onPlayerReady = (_io, _socket, { gameCode, player }, callback) => {
   try {
     validateGameCode(gameCode)
     validatePlayer(player)
-    validateJottoWord(jottoWord)
 
-    Jotto.readyPlayer(gameCode, player, jottoWord)
+    GameEngine.readyPlayer(gameCode, player)
 
     _io.to(gameCode).emit('player_ready_in_game', {
-      gameState: Jotto.getGame(gameCode),
+      gameState: GameEngine.getGame(gameCode),
       player,
     })
     callback()
@@ -80,10 +70,10 @@ const onStartGame = (_io, _socket, { gameCode }, callback) => {
   try {
     validateGameCode(gameCode)
 
-    Jotto.startGame(gameCode)
+    GameEngine.startGame(gameCode)
 
     _io.to(gameCode).emit('game_started', {
-      gameState: Jotto.getGame(gameCode),
+      gameState: GameEngine.getGame(gameCode),
     })
     callback()
   } catch (error) {
@@ -91,22 +81,21 @@ const onStartGame = (_io, _socket, { gameCode }, callback) => {
   }
 }
 
-const onGuessWord = (
+const onGameplayInput = (
   _io,
   _socket,
-  { gameCode, guesser, opponent, word },
+  { gameCode, player, data },
   callback,
 ) => {
   try {
     validateGameCode(gameCode)
-    validatePlayer(guesser)
-    validatePlayer(opponent)
-    validateJottoWord(word)
+    validatePlayer(player)
+    // validateData(data)
 
-    Jotto.guessPlayerWord(gameCode, guesser, opponent, word)
+    GameEngine.acceptGameplayInput(gameCode, player, data)
 
-    _io.to(gameCode).emit('player_guessed_word', {
-      gameState: Jotto.getGame(gameCode),
+    _io.to(gameCode).emit('player_submitted_gameplay_input', {
+      gameState: GameEngine.getGame(gameCode),
     })
     callback()
   } catch (error) {
@@ -136,7 +125,7 @@ export const GameServerEvents = [
     listener: onStartGame,
   },
   {
-    name: 'guess_word',
-    listener: onGuessWord,
+    name: 'gameplay_input',
+    listener: onGameplayInput,
   },
 ]

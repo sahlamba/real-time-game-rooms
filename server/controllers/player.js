@@ -1,4 +1,4 @@
-import Jotto from '../jotto/index.js'
+import GameEngine from '../game-engine/index.js'
 
 export const getPlayerGames = (req, res, next) => {
   try {
@@ -6,7 +6,7 @@ export const getPlayerGames = (req, res, next) => {
     if (!playerId) {
       throw new Error('Missin player ID, API usage: ?playerId=<playerId>')
     }
-    const playerGameCodeMappings = Jotto.getPlayerJoinedGames(playerId)
+    const playerGameCodeMappings = GameEngine.getPlayerJoinedGames(playerId)
     res.json({
       ok: true,
       playerGameCodeMappings,
